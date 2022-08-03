@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useEffect, useState } from "react";
 
-function App() {
+interface user {
+  login: string;
+}
+
+const App = (user) => {
+  const [data, setData] = useState<user[]>([]);
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState<boolean>();
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`https://api.github.com/users/AnimaMa`)
+      .then((response) => response.json())
+      .then((json) => setData(json))
+      .then(() => setLoading(false));
+  }, []);
+
+  console.log(data);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {Object.keys(data).map((key, i) => (
+        <div>
+          <b>{key}</b>
+          <p>{data[key]}</p>
+        </div>
+      ))}
     </div>
   );
-}
+};
 
 export default App;
