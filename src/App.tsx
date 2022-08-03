@@ -5,7 +5,7 @@ interface user {
   login: string;
 }
 
-const App = (user) => {
+const App = () => {
   const [data, setData] = useState<user[]>([]);
   const [error, setError] = useState();
   const [loading, setLoading] = useState<boolean>();
@@ -15,15 +15,22 @@ const App = (user) => {
     fetch(`https://api.github.com/users/AnimaMa`)
       .then((response) => response.json())
       .then((json) => setData(json))
-      .then(() => setLoading(false));
+      .then(() => setLoading(false))
+      .catch(setError);
   }, []);
 
-  console.log(data);
+  if (loading) return <p>Loading..</p>;
+  if (error) return <pre>{JSON.stringify(error)}</pre>;
+  if (!data) return <p>No data</p>;
+
   return (
     <div>
-      {Object.keys(data).map((key, i) => (
+      {Object.keys(data).map((key) => (
         <div>
           <b>{key}</b>
+          {key === "avatar_url" && (
+            <img src={data[key]} width="50px" height={"50px"} />
+          )}
           <p>{data[key]}</p>
         </div>
       ))}
