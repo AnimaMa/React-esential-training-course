@@ -1,5 +1,7 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
+import { ComponentUseState } from "./ComponentUseState";
+import { ComponentUseEffect } from "./ComponentUseEffect";
 
 interface user {
   login: string;
@@ -25,15 +27,20 @@ const App = () => {
 
   return (
     <div>
+      <ComponentUseEffect />
+
+      {/* // */}
       {Object.keys(data).map((key) => (
-        <div>
-          <b>{key}</b>
+        <div className="flex gap-6">
+          <b className="italic text-violet-600">{key}</b>
           {key === "avatar_url" && (
             <img src={data[key]} width="50px" height={"50px"} />
           )}
           <p>{data[key]}</p>
         </div>
       ))}
+
+      <ComponentUseState />
     </div>
   );
 };
